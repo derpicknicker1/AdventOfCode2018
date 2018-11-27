@@ -15,6 +15,7 @@ $RECYCLE.BIN/
 *.msp
 *.map
 src/*.exe
+*.exe
 *.sublime*
 
 # Windows shortcuts
