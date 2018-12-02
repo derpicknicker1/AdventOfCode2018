@@ -6,6 +6,8 @@ int toI(char *s) {
 		*s++;
 		min++;
 	}
+	if(*s == '+')
+		*s++;
     while (*s && *s != '\n')
         sum = sum * 10 + (*s++ - '0');
     return min?-sum:sum;
