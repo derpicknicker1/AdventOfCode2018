@@ -23,9 +23,9 @@ int main() {
 
 	//execute(0) // EXAMPLE
 	execute(1)
-	execute(2)
-	/* execute(3)
-	execute(4)
+	execute(2) 
+	execute(3)
+	/* execute(4)
 	execute(5)
 	execute(6)
 	execute(7)
@@ -43,7 +43,7 @@ int main() {
 	execute(19)
 	execute(20)
 	execute(21)
-	execute(22)
+	execute(22) 
 	execute(23)
 	execute(24)
 	execute(25)
