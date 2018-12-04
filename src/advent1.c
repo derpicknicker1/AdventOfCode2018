@@ -61,6 +61,7 @@ int result = 0;
 static int getInput(char *f, int taskB) {
 	char * line = NULL;
     size_t l = 0;
+    result = 0;
     char *mem = calloc(1000000, sizeof(char));
    
 	FILE *file = fopen(f, "r");
@@ -94,10 +95,7 @@ static int getInput(char *f, int taskB) {
 void get1a(char * f) {
 	if(!getInput(f, 0))
 		return;
-
 	printf("1a: %d\n", result);
-
-	result = 0;
 }
 
 
@@ -108,6 +106,4 @@ void get1b(char *f) {
 	if(!getInput(f, 1))
 		return;
 	printf("1b: %d\n\n", result);
-
-	result = 0;
 }

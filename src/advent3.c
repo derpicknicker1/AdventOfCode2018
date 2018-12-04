@@ -90,8 +90,8 @@ static int getInput(char *f) {
 		for(int y = 0; y < height; y++)
 			for(int x = 0; x < width; x++)
 				map[top+y][left+x]++;
-		claims = (int**)realloc(claims, ++cntC * sizeof(int*));
-		claims[cntC-1] = (int*)malloc(4 * sizeof(int));
+		claims = realloc(claims, ++cntC * sizeof(int*));
+		claims[cntC-1] = malloc(4 * sizeof(int));
 		int tmp[4] = {left, top,width, height};
 		memcpy(claims[cntC-1], tmp, 4 * sizeof(int));
 	}
