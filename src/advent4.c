@@ -63,13 +63,11 @@ Your puzzle answer was 71976.
 
 #include "advent.h"
 
-#define LOG_SIZE 4
-#define ID 0
-#define MIN 1
-#define GID 2
-#define MODE 3
+typedef struct Log {
+	int id, min, gid, mode;
+} Log;
 
-static int **logs;
+static Log *logs;
 static int cntL = 0;
 static int cntG = 0;
 
@@ -78,9 +76,9 @@ static int cntG = 0;
 ##########################*/
 static int getInput(char *f) {
 	char * line = NULL;
-    size_t l = 0;
-    cntL = 0;
-    cntG = 0;
+	size_t l = 0;
+	cntL = 0;
+	cntG = 0;
 
 	FILE *file=fopen(f, "r");
 	if(file == NULL) {
@@ -91,56 +89,49 @@ static int getInput(char *f) {
 	while( getline(&line, &l, file) != -1 ) {
 		int M, d, h, m, g = 0;
 		char l[10];
+
 		if(strchr(line,'#'))
 			sscanf(line, "[%*d-%d-%d %d:%d] %s #%d", &M,&d,&h,&m,&l,&g);
 		else
 			sscanf(line, "[%*d-%d-%d %d:%d] %s", &M,&d,&h,&m,&l);
-		logs = realloc(logs, ++cntL * sizeof(int*));
-		logs[cntL-1] = malloc(LOG_SIZE*sizeof(int));
-		logs[cntL-1][ID] = m + h*100 + d*10000 + M*1000000;
-		logs[cntL-1][MIN] = m;
-		logs[cntL-1][GID] = g;
-		logs[cntL-1][MODE] = l[0];
+
+		logs = realloc(logs, ++cntL * sizeof(Log));
+		
+		logs[cntL-1].id = m + h*100 + d*10000 + M*1000000;
+		logs[cntL-1].min = m;
+		logs[cntL-1].gid = g;
+		logs[cntL-1].mode = l[0];
+
 		if(g > cntG)
 			cntG = g;
 	}
 
 	cntG++;
-
 	free(line);
 	fclose(file);
 	return 1;
 }
 
 
-static void swap(int* a, int* b) { 
-    int t[LOG_SIZE];
-    memcpy(t,a,LOG_SIZE*sizeof(int));
-    memcpy(a,b,LOG_SIZE*sizeof(int)); 
-    memcpy(b,t,LOG_SIZE*sizeof(int));
+static void swap(Log* a, Log* b) {
+	Log t = *a;
+	*a = *b;
+	*b = t;
 } 
 
-static int partition (int **arr, int low, int high) { 
-	int pivot = arr[high][0];   
-	int i = (low - 1);  
-	for (int j = low; j <= high- 1; j++)
-		if (arr[j][0] <= pivot) { 
-			i++;    
-			swap(arr[i], arr[j]); 
-		} 
-	swap(arr[i + 1], arr[high]); 
-	return (i + 1); 
-} 
-  
 
-static void quickSort(int **arr, int low, int high) { 
-    if (low < high) {   
-        int pi = partition(arr, low, high); 
-        quickSort(arr, low, pi - 1); 
-        quickSort(arr, pi + 1, high); 
-    } 
-} 
-  
+static void qSort(Log *arr, int low, int high) {
+	if (low < high) {
+		int i = (low - 1);
+		for (int j = low; j < high; j++)
+			if (arr[j].id <= arr[high].id)
+				swap(&arr[++i], &arr[j]);
+		swap(&arr[i + 1], &arr[high]);
+		qSort(arr, low, i);
+		qSort(arr, i + 2, high);
+	}
+}
+
 
 static int solve(char *f, int choose) {
 
@@ -152,22 +143,21 @@ static int solve(char *f, int choose) {
 
 	memset(guards, 0, sizeof(guards) );
 
-	quickSort(logs, 0, cntL - 1);
+	qSort(logs, 0, cntL - 1);
 
 	for(int i = 0; i < cntL; i++) {
-		if(logs[i][GID] != 0)
-			gID = logs[i][GID];
+		if(logs[i].gid != 0)
+			gID = logs[i].gid;
 		else {
-			if(logs[i][MODE] == 'f')
-				minMax = logs[i][MIN];
-		 	else if(logs[i][MODE] == 'w') {
-		 		for(int j = minMax; j < logs[i][MIN]; j++) {
+			if(logs[i].mode == 'f')
+				minMax = logs[i].min;
+		 	else if(logs[i].mode == 'w') {
+		 		for(int j = minMax; j < logs[i].min; j++) {
 		 			guards[gID][j]++;
 					guards[gID][60]++;
 		 		}
 		 	}
 		}
-		free(logs[i]);
 	}
 	free(logs);
 	logs = NULL;
@@ -207,6 +197,7 @@ static int solve(char *f, int choose) {
 
 	return ret;
 }
+
 
 /*##########################
 # Function to solve part A #
