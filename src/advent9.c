@@ -50,6 +50,13 @@ Here are a few more examples:
 What is the winning Elf's score?
 
 Your puzzle answer was 405143.
+
+--- Part Two ---
+Amused by the speed of your answer, the Elves are curious:
+
+What would the new winning Elf's score be if the number of the last marble were 100 times larger?
+
+Your puzzle answer was 3411514667.
 */
 
 #include "advent.h"
@@ -85,13 +92,13 @@ static int getInput(char *f) {
 }
 
 
-static unsigned long solve(char *f, int mul) {
+static unsigned int solve(char *f, int mul) {
 	if(!getInput(f))
 		return 0;
 
-	maxVal = maxVal * mul;
+	maxVal *= mul;
 
-	unsigned long pScore[numP], player = 0, max = 0;
+	unsigned int pScore[numP], player = 0, max = 0;
 	memset(pScore, 0, sizeof(pScore));
 
 	Marble *head = malloc(sizeof(Marble));
@@ -102,13 +109,13 @@ static unsigned long solve(char *f, int mul) {
 	for(int i = 1; i <= maxVal; i++) {
 
 		if(i % 23 == 0){
-			pScore[player] += i;
 
 			for(int j = 0; j < 7; j++)
 				head = head->prev;
 
-			pScore[player] += head->val;
-			Marble *tmp   = head;
+			pScore[player] += head->val + i;
+
+			Marble *tmp = head;
 			head->prev->next = head->next;
 			head = head->next;
 			free(tmp);
@@ -147,7 +154,7 @@ static unsigned long solve(char *f, int mul) {
 ##########################*/
 void get9a(char * f) {
 
-	printf("9a: %lu\n", solve(f, 1));
+	printf("9a: %u\n", solve(f, 1));
 
 }
 
@@ -157,6 +164,6 @@ void get9a(char * f) {
 ##########################*/
 void get9b(char *f) {
 	
-	printf("9b: %lu\n\n", solve(f, 100));
+	printf("9b: %u\n\n", solve(f, 100));
 
 }
