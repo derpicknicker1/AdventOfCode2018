@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include <limits.h>
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
