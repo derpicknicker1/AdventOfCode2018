@@ -11,7 +11,7 @@ clock_t begin;
 void getTime(int i) {
 	double timeSpent = (double)(clock() - begin) / CLOCKS_PER_SEC;
 	begin = clock();
-	printf("Runtime %d: %.3f\n\n\n", i, timeSpent);
+	printf("Runtime %d: %.3f\n_______________________________\n\n", i, timeSpent);
 }					
 
 int main() {
@@ -33,8 +33,8 @@ int main() {
 	execute(9)
 	execute(10)
 	execute(11)
-	/* execute(12)
-	execute(13)
+	execute(12)
+	/* execute(13)
 	execute(14)
 	execute(15)
 	execute(16)
@@ -49,7 +49,7 @@ int main() {
 	execute(25)
 	*/
 	double timeSpent = (double)(clock() - beginAll) / CLOCKS_PER_SEC;
-	printf("Overall Runtime: %.3f\n\n", timeSpent);
+	printf("Overall Runtime: %.3f\n_______________________________\n", timeSpent);
 	system("Pause");
 
 	return 1;
