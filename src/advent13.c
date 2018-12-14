@@ -273,17 +273,16 @@ static void solve(char *f,int mode, int *res) {
 	for(int y = 0; y < cntL; y++) {
 		for(int x = 0; x < wL; x++) {
 			if(map[y][x] == '<' || map[y][x] == '>' || map[y][x] == 'v' || map[y][x] == '^') {
+				char c = map[y][x], buf[10] = {};
+				sprintf(buf, "%3d%3d",y,x);
 				cars = realloc(cars, ++cntC * sizeof(Car));
 				cars[cntC - 1].x = x;
 				cars[cntC - 1].y = y;
-				char c = map[y][x];
 				cars[cntC - 1].dir = c == '<' ? LEFT : (c == '>' ? RIGHT : (c == 'v' ? DOWN : UP));
 				cars[cntC - 1].turn = LEFT;
-				cars[cntC - 1].crashed = 0;
-				char buf[10] = {};
-				sprintf(buf, "%3d%3d",y,x);
+				cars[cntC - 1].crashed = 0;				
 				cars[cntC - 1].id = toI(buf);
-				if(map[y][x] == '>' || map[y][x] == '<')
+				if(c == '>' || c == '<')
 					map[y][x] = '-';
 				else
 					map[y][x] = '|';

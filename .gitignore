@@ -18,6 +18,7 @@ src/*.exe
 src/*.o
 *.o
 *.sublime*
+*.bk*
 
 # Windows shortcuts
 *.lnk
